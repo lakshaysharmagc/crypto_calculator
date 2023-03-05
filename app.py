@@ -1,4 +1,4 @@
-from flask import Flask ,render_template,request
+from flask import Flask ,render_template,request,redirect,url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -15,8 +15,11 @@ class Crypto (db.Model):
 
 @app.route('/' ,methods =['GET','POST'])
 def index():
-    return render_template('index.html')
-
+    coins = Crypto.query.all()
+    return render_template('index.html',coins = coins)
+@app.route('/recommend/<coin>')
+def recommend(coin):
+    return '<h2> This is the {} page </h2>'.format(coin)
 
 @app.route('/CyptoCalculator')
 def calculator():
@@ -24,8 +27,9 @@ def calculator():
 @app.route('/Compare',methods =['GET','POST'])
 def compare():
     if request.method =="POST":
-         print('Post')
-    
+         coin1=request.form['coin1']
+         coin2=request.form['coin2']
+         
     coins = Crypto.query.all()
     return render_template('compare.html',coins = coins)
 

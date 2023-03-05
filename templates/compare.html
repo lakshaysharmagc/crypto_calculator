@@ -20,23 +20,21 @@
     <h1>Compare Tools</h1>
     <form action="/Compare" method="POST">
     <div class="container">
-        
-            <Select class="form-select" aria-label="Default select example" >
-                <option selected>Open this select menu</option>
+            <Select class="form-select" aria-label="Default select example" name="coin1" >
+                <option selected value="">Open this select menu</option>
                 {% for coin   in coins  %}
-                <option class="dropdown-item" href="">{{coin.title}}<option>
+                <option class="dropdown-item" value="{{coin.symbol}}" >{{coin.title}}<option>
                 {% endfor %}
-              
-            </option>
+              </option>
         </select>
         </div>
     <h2 class="container"> VS </h2>
         <div class="container">
             
-            <Select  class="form-select" aria-label="Default select example" >
-                <option selected>Open this select menu</option>
+            <Select  class="form-select" aria-label="Default select example"  name="coin2">
+                <option selected value="">Open this select menu</option>
                 {% for coin   in coins  %}
-                <option class="dropdown-item" href="">{{coin.title}}<option>
+                <option class="dropdown-item" value="{{coin.symbol}}" >{{coin.title}}<option>
                 {% endfor %}
               
             </option>
