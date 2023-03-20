@@ -47,6 +47,63 @@
      
       </div>
     </form>
-    <div>{{Chart}}</div>
+    <div style="height: 550px">
+      <canvas id="myChart"></canvas>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+      const labels = [];
+      const coin1 = '{{coin1}}'
+      const coin2 = '{{coin2}}'
+      const data = {
+          labels: {{ labels | safe }},
+          datasets: [{
+              label: coin1 ,
+              backgroundColor: 'rgb(0, 99, 132)',
+              borderColor: 'rgb(0, 99, 132)',
+              data: {{ values1 | safe }},
+              //fill:true
+          },
+          {
+              label: coin2,
+              backgroundColor: 'rgb(245, 102, 66)',
+              borderColor: 'rgb(245, 102, 66)',
+              data: {{ values2 | safe }},
+              //fill:true
+          }]
+      };
+
+      const plugin = {
+  id: 'customCanvasBackgroundColor',
+  beforeDraw: (chart, args, options) => {
+    const {ctx} = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = options.color || '#99ffff';
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  }
+};
+        const config = {
+            type: 'line',
+            data: data,
+            options: {maintainAspectRatio: false,
+                plugins: {
+      customCanvasBackgroundColor: {
+        color: 'black',
+      }
+    }
+            },
+            plugins: [plugin],
+        };
+
+  </script>
+  <script>
+      const myChart = new Chart(
+          document.getElementById('myChart'),
+          config
+      );
+  </script>
+
   </body>
 </html>

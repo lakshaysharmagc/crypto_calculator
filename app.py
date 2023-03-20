@@ -2,7 +2,7 @@ from flask import Flask ,render_template,request,redirect,url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from recommend import *
-
+import getdata as gs 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///crypto.db'
 db = SQLAlchemy(app)
@@ -21,20 +21,29 @@ def index():
     
 @app.route('/recommend/<coin>')
 def recommend(coin):
-    return '<h2> This is the {} page </h2>'.format(coin)
+    values = gs.getchart(coin)
+    print(values)
+    months = ["Jan'22","Feb'22","Mar'22","Apr'22","May'22","Jun'22","Jul'22","Aug'22","Sep'22","Oct'22","Nov'22","Dec'22","Jan'23","Feb'23"]
+    return render_template('lineChart1.html',labels = months, values = values,coin =coin )
+
+
 
 @app.route('/CyptoCalculator')
 def calculator():
     return 'Cypto Calculator'
 @app.route('/Compare',methods =['GET','POST'])
 def compare():
+    coins = Crypto.query.all()
     if request.method =="POST":
          coin1=request.form['coin1']
          coin2=request.form['coin2']
-         displayText()
-
-    coins = Crypto.query.all()
-    return render_template('compare.html',coins = coins)
+         months = ["Jan'22","Feb'22","Mar'22","Apr'22","May'22","Jun'22","Jul'22","Aug'22","Sep'22","Oct'22","Nov'22","Dec'22","Jan'23","Feb'23"]
+         values1 = gs.getchart(coin1)
+         print(values1)
+         values2 = gs.getchart(coin2)
+         return render_template('compare.html',coins = coins,labels = months,values1  = values1 ,values2=values2,coin1 =coin1,coin2=coin2 )
+    else:
+         return render_template('compare.html',coins = coins)
 
 if __name__ == "__main__":
     app.run(debug = True,port=4040)
