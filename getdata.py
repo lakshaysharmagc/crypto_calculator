@@ -24,6 +24,7 @@ end2023 = end2023.tolist()
 today = date.today()
 # Yesterday date
 yesterday = today - timedelta(days = 1)
+
 yes_str = yesterday.strftime("%Y-%m-%d")
 yes_lst = list(yes_str.split(" "))
 
@@ -36,13 +37,13 @@ res = {start_date[i]: end_date[i] for i in range(len(start_date))}
 def getchart(symbol):
     lineChart=[]
     for start, end in res.items():
-        url = "https://api.exchangerate.host/fluctuation?start_date=" + start + "&end_date=" +  end + "&symbols=" + symbol + '&base=USD' + "&format=json"
+        url = "https://api.exchangerate.host/fluctuation?start_date=" + start + "&end_date=" +  end + "&symbols=" + symbol + '&base=USD' + "&format=json&source=crypto"
         r = requests.get(url)
         print(url)
         if r.status_code == 200:
             data = r.json()
-            d = data["rates"][symbol]["change"]
-            lineChart.append(d*100)
+            d = data["rates"][symbol]["change_pct"]
+            lineChart.append(d)
         else:
             exit()
     return lineChart
