@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script > $(".dropdown-menu li a").click(function(){
+        $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+        $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+      });</script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/TheBigLeaf.css">
+    <title>The Big Leaf</title>
+</head>
+<body style="font-family: 'Roboto', sans-serif;">
+    <div id="navbar">
+        <a href="./TheBigLeaf.html" id="logo"><img src="/static/Logo.png" alt="The Big Leaf" style="height: 3.5vw; width: 13vw;"></a>
+        <div id="navbar-right">
+          <a href="./home">Home</a>
+          <a class="active" href="/Compare">Comparison Tool</a>
+          <a href="/calculator">Calculator</a>
+        </div>
+    </div>
+    <form action="/Compare" method="POST">
+    <div style="margin-top:6.6vw;padding:1vw 1vw 1vw;" id = "home">
+        <h1 style="padding-left: 2vw; padding-right: 60vw; font-size: 4.5vw;">
+            Compare Your Cryptocurrency
+        </h1>
+    </div>
+
+    <div class= "selectdiv" style="position: absolute; top: 23vw; left: 7vw;">
+        <select name="coin1" id="coins_compare1">
+            <option value=""></option>
+            {% for coin   in coins  %}
+            <option class="dropdown-item" value="{{coin.symbol}}" >{{coin.title}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div style="position: absolute; top: 29vw; left: 10vw;">
+        <img src="/static/arrow.png" alt="comparrision" style="height: 3.5vw; width: auto;">
+    </div>
+
+    <div class= "selectdiv" style="position: absolute; top: 35vw; left: 7vw;">
+        <select name="coin2" id="coins_compare2">
+            <option value=""></option>
+            {% for coin   in coins  %}
+            <option class="dropdown-item" value="{{coin.symbol}}" >{{coin.title}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div style="position: absolute; top: 41vw; left: 12vw;">
+        <button type="submit" id="compare">Compare</button>
+    </div>
+    </form>
+    <div style="position: absolute; top: 15vw; left: 35vw;height: 500px;width: 1000px;">
+        <canvas id="myChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = [];
+        const coin1 = '{{coin1}}'
+        const coin2 = '{{coin2}}'
+        const data = {
+            labels: {{ labels | safe }},
+            datasets: [{
+                label: coin1 ,
+                backgroundColor: 'rgb(0, 99, 132)',
+                borderColor: 'rgb(0, 99, 132)',
+                data: {{ values1 | safe }},
+                //fill:true
+            },
+            {
+                label: coin2,
+                backgroundColor: 'rgb(245, 102, 66)',
+                borderColor: 'rgb(245, 102, 66)',
+                data: {{ values2 | safe }},
+                //fill:true
+            }]
+        };
+  
+        const plugin = {
+    id: 'customCanvasBackgroundColor',
+    beforeDraw: (chart, args, options) => {
+      const {ctx} = chart;
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = options.color || '#99ffff';
+      ctx.fillRect(0, 0, chart.width, chart.height);
+      ctx.restore();
+    }
+  };
+          const config = {
+              type: 'line',
+              data: data,
+              options: {maintainAspectRatio: false,
+                  plugins: {
+        customCanvasBackgroundColor: {
+          color: 'black',
+        }
+      }
+              },
+              plugins: [plugin],
+          };
+  
+    </script>
+    <script>
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+
+
+</body>
+</html>

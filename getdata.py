@@ -26,6 +26,8 @@ today = date.today()
 yesterday = today - timedelta(days = 1)
 
 yes_str = yesterday.strftime("%Y-%m-%d")
+tod_str = today.strftime("%Y-%m-%d")
+
 yes_lst = list(yes_str.split(" "))
 
 #Combining both lists
@@ -39,7 +41,6 @@ def getchart(symbol):
     for start, end in res.items():
         url = "https://api.exchangerate.host/fluctuation?start_date=" + start + "&end_date=" +  end + "&symbols=" + symbol + '&base=USD' + "&format=json&source=crypto"
         r = requests.get(url)
-        print(url)
         if r.status_code == 200:
             data = r.json()
             d = data["rates"][symbol]["change_pct"]
@@ -47,3 +48,16 @@ def getchart(symbol):
         else:
             exit()
     return lineChart
+
+def CurrentValue(symbol):
+    
+     url = "https://api.exchangerate.host/fluctuation?start_date=" + yes_str + "&end_date=" +  tod_str + "&symbols=" + symbol + '&base=USD' + "&format=json&source=crypto"       
+     r = requests.get(url)
+     print(url)
+     if r.status_code == 200:
+        data = r.json()
+        d = data["rates"][symbol]["end_rate"]
+        print(url)
+     else:
+            exit()
+     return d

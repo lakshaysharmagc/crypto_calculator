@@ -13,39 +13,70 @@
 </head>
 <body style="font-family: 'Roboto', sans-serif;">
     <div id="navbar">
-        <a href="./" id="logo"><img src="/static/Logo.png" alt="The Big Leaf" style="height: 3.5vw; width: 13vw;"></a>
+        <a href="./home" id="logo"><img src="/static/Logo.png" alt="The Big Leaf" style="height: 3.5vw; width: 13vw;"></a>
         <div id="navbar-right">
-          <a href="/home">Home</a>
-          <a href="/Calculator">Calculator</a>
-          <a class="active" href="/recommend">Recommendation</a>
+          <a href="./home">Home</a>
+          <a href="./Compare">Comparison Tool</a>
+          <a class="active" href="./Calculator">Calculator</a>
         </div>
     </div>
 
     <div style="margin-top:6.6vw;padding:1vw 1vw 1vw;" id = "home">
         <h1 style="padding-left: 2vw; padding-right: 60vw; font-size: 4.5vw;">
-            Get Recommendations for your crypto
+            Cryptocurrency Calculator
         </h1>
-
-        <div style="padding: 0.5vw; height: 23vw; width: 45vw;">  
-            <canvas id="myChart"></canvas>
-        </div>
-
-        <div style="position: absolute; top: 15vw; right: 35vw;">
-            <p style = "color: #7ed957; font-size: 1.2vw;">
-                0.65%
-                <img src="profit.png" alt="Up Arrow" style="height: 2vw; width: 2.5vw; position: absolute; bottom: 1vw;">
-            </p>
-        </div>
-
-        
-
-
-        <div style="position: absolute; top: 27vw; right: 5vw; left: 55vw;">
-            <img src="prediction.png" alt="Future Predictions" style="height: 20vw; width: 40vw;">
-        </div>
-
-
     </div>
+    <form action="/Calculator" method="POST">
+    <div class= "selectdiv" style="position: absolute; top: 20vw; left: 5vw;">
+        <input type="hidden" name="action_type" value="coinonly">
+        
+        <select name="coin" id="coins_calculator" onchange="this.form.submit();">
+            <option value=""></option>
+            {% for coin   in coins  %}
+            
+            <option class="dropdown-item" value="{{coin.symbol}}" >{{coin.title}}</option>
+            
+            {% endfor %}
+            
+        </select>
+        
+    </div>
+    </form>
+
+    <div style="position: absolute; top: 25vw; left: 3vw;">
+        <canvas id="myChart" style="height: 22vw; width: 40vw;"></canvas>
+    </div>
+
+
+    <div style="position: absolute; top: 12vw; left: 55vw; padding: 1vw; font-size: 1.5vw;">
+        <p style="font-size: 3.5vw;">{{coin}}</p>
+        <p>Select the Term for: </p>
+        <div>
+            <input type="radio" id="long" name="Term" value="Long">
+            <label for="long">Long Term</label> &emsp;
+            <input type="radio" id="short" name="Term" value="Short">
+            <label for="short">Short Term</label> <br>
+
+            <label for="volume" style="padding-top: 1vw; padding-right: 1vw;">Volume of the coin: </label>
+            <input type="number" id = "volume" name = "volume" style="background-color: #ff5757; color: #fefefe; border-radius: 0.5vw;">
+
+            <br>
+            <label for="price" style="padding-top: 1vw;">Current price of coin: </label> <label for="price" style="position: relative;">{{current}}</label>
+            
+        </div>
+
+        <div style="padding-top: 1vw;">
+            <p>Future prediction of prices:</p>
+            <img src="calc2.png" alt="chart" style="height: 12vw; width: 35vw;">
+            <div style="padding-top: 1vw; padding-left: 12vw;">
+                <button type="button" id = "recommend" onclick="window.location.href = 'recommendation.html';">Recommend</button>
+            </div>
+            
+        </div>
+        
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const labels = [];
@@ -92,7 +123,7 @@
             config
         );
     </script>
-
 </body>
 </html>
+
 
