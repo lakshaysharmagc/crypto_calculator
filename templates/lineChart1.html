@@ -1,0 +1,65 @@
+
+{% block title %}Recommedation Page{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<head>
+    <p></p>
+    <h2 style="font-family:Times New Roman,serif;text-align:center">Change in {{coin}}  with respect to USD</h2>
+</head>
+<body>
+    <div style="height:550px">
+        <canvas id="myChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = [];
+        const coin = '{{coin}}'
+        const data = {
+            labels: {{ labels | safe }},
+            datasets: [{
+                label: coin,
+                backgroundColor: 'rgb(189, 11, 11)',
+                borderColor: 'rgb(189, 11, 11)',
+                data: {{ values | safe }},
+                //fill:true
+            }]
+        };
+
+        const plugin = {
+  id: 'customCanvasBackgroundColor',
+  beforeDraw: (chart, args, options) => {
+    const {ctx} = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = options.color || '#99ffff';
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  }
+};
+        const config = {
+            type: 'line',
+            data: data,
+            options: {maintainAspectRatio: false,
+                plugins: {
+      customCanvasBackgroundColor: {
+        color: 'black',
+      }
+    }
+            },
+            plugins: [plugin],
+        };
+        
+    </script>
+    <script>
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+
+
+</body>
+</html>
+
+{% endblock %}

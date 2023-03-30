@@ -1,0 +1,116 @@
+
+body {
+    background-color: #0a0a0a;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #fefefe;
+  }
+
+
+  #navbar {
+    overflow: hidden;
+    background-color: #000000;
+    opacity: 1;
+    padding: 1vw 4vw;
+    transition: 0.5s;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 99;
+  }
+  
+  #navbar a {
+    float: left;
+    color: #fefefe;
+    text-align: center;
+    padding: 0.65vw;
+    text-decoration: none;
+    font-size: 1.2vw; 
+    line-height: 1.63vw;
+    border-radius: 0.26vw;
+  }
+  
+  #navbar #logo {
+    font-size: 2.28vw;
+    font-weight: bold;
+    transition: 0.4s;
+  }
+
+  #navbar #logo:hover{
+    transform: scale(1.2);
+  } 
+
+  #navbar a:hover {
+    background-color: #000000;
+    color: #ff5757;
+  }
+  
+  #navbar a.active {
+    background-color: #000000;
+    color: #ff3737;
+  }
+  
+  #navbar-right {
+    float: right;
+  }
+
+  button{
+    background-color: #ff3737;
+    background-image: linear-gradient(#ff5757, #ff1616);
+
+    border: none;
+    color: #fefefe;
+    padding: 0.7vw 1.4vw;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0.27vw 0.14vw;
+    cursor: pointer;
+    border-radius: 16px;
+  }
+
+  button:hover {
+    background-color: #ff5757;
+    background-image: linear-gradient(#ff1616, #ff5757);
+  }
+
+  
+  .selectdiv:after {
+      content: '\f078';
+      font: normal normal normal 1.63vw/1 FontAwesome;
+      color: #ff5757;
+      background-color: #d9d9d9;
+      right: 0vw;
+      top: 0.33vw;
+      height: 3.3vw;
+      padding: 0.91vw;
+      position: absolute;
+      border-radius: 0.45vw;
+      pointer-events: none;
+  }
+  
+  select::-ms-expand {
+  display: none;
+  }
+  
+  .selectdiv select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 3.26vw;
+    float: right;
+    margin: 0.33vw 0vw;
+    padding: 0.65vw 6.51vw;
+    font-size: 1.05vw;
+    color: #fefefe;
+    background-color: #ff5757;
+    border-radius: 0.39vw;
+  }
+
+
+  input[type='radio'] {
+    accent-color: #ff5757;
+    -ms-transform: scale(1.5); /* IE 9 */
+    -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+    transform: scale(1.5);
+  }
