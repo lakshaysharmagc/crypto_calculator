@@ -50,14 +50,18 @@ def getchart(symbol):
     return lineChart
 
 def CurrentValue(symbol):
-    
-     url = "https://api.exchangerate.host/fluctuation?start_date=" + yes_str + "&end_date=" +  tod_str + "&symbols=" + symbol + '&base=USD' + "&format=json&source=crypto"       
+     if symbol =="BTC":
+        url = "https://api.exchangerate.host/latest?symbols=USD&base="+ symbol + "&format=json&source=crypto"   
+     else:    
+        url = "https://api.exchangerate.host/latest?symbols="  + symbol + '&base=USD' + "&format=json&source=crypto"       
      r = requests.get(url)
      print(url)
      if r.status_code == 200:
         data = r.json()
-        d = data["rates"][symbol]["end_rate"]
-        print(url)
+        if symbol =="BTC":
+            d = data["rates"]['USD']
+        else:
+            d = data["rates"][symbol]
      else:
             exit()
      return d
