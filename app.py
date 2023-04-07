@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from recommend import *
 import getdata as gs 
+import recommend as rcd
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///crypto.db'
 db = SQLAlchemy(app)
@@ -21,8 +22,9 @@ def index():
 @app.route('/recommend/<coin>')
 def recommend(coin):
     values = gs.getchart(coin)
+    plot_data=rcd.getcandleChart(coin)
     months = ["Jan'22","Feb'22","Mar'22","Apr'22","May'22","Jun'22","Jul'22","Aug'22","Sep'22","Oct'22","Nov'22","Dec'22","Jan'23","Feb'23"]
-    return render_template('recommend.html',labels = months, values = values,coin =coin )
+    return render_template('recommend.html',labels = months, values = values,coin =coin, plot_url=plot_data )
 
 
 
@@ -39,7 +41,13 @@ def calculator():
             values = gs.getchart(coin)
             return render_template('calculator.html',current = cv ,coins = coins,labels = months ,values = values ,coin =coin)
          else:
-            return render_template('calculator.html',current = cv ,coins = coins ,title= title )
+            coin=request.form['coin']
+            plot_data=rcd.getcandleChart(coin)
+            term = request.form['Term']
+            vol = request.form['vol']
+            cv = gs.CurrentValue(coin)
+            print(vol)
+            return render_template('calculator.html',current = cv ,coins = coins ,plot_url=plot_data,coin =coin )
     else:
         return render_template('calculator.html',coins = coins )
 @app.route('/Compare',methods =['GET','POST'])

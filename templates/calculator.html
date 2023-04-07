@@ -43,34 +43,40 @@
     </div>
     </form>
 
-    <div style="position: absolute; top: 25vw; left: 3vw;">
+    <div style="position: fixed; top: 25vw; left: 3vw;">
         <canvas id="myChart" style="height: 22vw; width: 40vw;"></canvas>
+        <img class="plot"  alt="" style="position:fixed;top: 25vw; left: 3vw;size-adjust:40%;" src="data:image/png;base64, {{ plot_url }}" >
     </div>
 
-
+    
     <div style="position: absolute; top: 12vw; left: 55vw; padding: 1vw; font-size: 1.5vw;">
         <p style="font-size: 3.5vw;">{{coin}}</p>
         <p>Select the Term for: </p>
         <div>
+            <form action="/Calculator" method="POST">
+            <input type="hidden" name="action_type" value="calculate">
+            <input type="hidden" name="coin" value="{{coin}}">
             <input type="radio" id="long" name="Term" value="Long">
             <label for="long">Long Term</label> &emsp;
             <input type="radio" id="short" name="Term" value="Short">
             <label for="short">Short Term</label> <br>
 
             <label for="volume" style="padding-top: 1vw; padding-right: 1vw;">Volume of the coin: </label>
-            <input type="number" id = "volume" name = "volume" style="background-color: #ff5757; color: #fefefe; border-radius: 0.5vw;">
+            <input type="number" id = "volume" name = "vol" style="background-color: #ff5757; color: #fefefe; border-radius: 0.5vw;">
 
             <br>
             <label for="price" style="padding-top: 1vw;">Current price of coin: </label> <label for="price" style="position: relative;">{{current}}</label> <label for="price" style="position: relative;"> USD</label>
             
         </div>
+        <div style="padding-top: 1vw; padding-left: 12vw;">
+            <button type="submit" id = "recommend">Recommend</button>
+        </div>
+    </form>
 
         <div style="padding-top: 1vw;">
             <p>Future prediction of prices:</p>
             <img src="calc2.png" alt="chart" style="height: 12vw; width: 35vw;">
-            <div style="padding-top: 1vw; padding-left: 12vw;">
-                <button type="button" id = "recommend" onclick="window.location.href = 'recommendation.html';">Recommend</button>
-            </div>
+            
             
         </div>
         

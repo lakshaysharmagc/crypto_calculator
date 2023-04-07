@@ -29,21 +29,15 @@
         <div style="padding: 0.5vw; height: 23vw; width: 45vw;">  
             <canvas id="myChart"></canvas>
         </div>
-
-        <div style="position: absolute; top: 15vw; right: 35vw;">
+        <div style="position: absolute; top: 10vw; right: 15vw;"> <h3> Candle Chart for Last 3 Months for This Cryptocurrency </h3> </div>
+        <div style="position: absolute; top: 12vw; right: 53vw;">
+            
             <p style = "color: #7ed957; font-size: 1.2vw;">
-                0.65%
-                <img src="profit.png" alt="Up Arrow" style="height: 2vw; width: 2.5vw; position: absolute; bottom: 1vw;">
+                
+            <img class="plot"  style=" position:absolute;" src="data:image/png;base64, {{ plot_url }}" >
+
             </p>
         </div>
-
-        
-
-
-        <div style="position: absolute; top: 27vw; right: 5vw; left: 55vw;">
-            <img src="prediction.png" alt="Future Predictions" style="height: 20vw; width: 40vw;">
-        </div>
-
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -92,7 +86,7 @@
             config
         );
     </script>
-
+ 
 </body>
 </html>
 
