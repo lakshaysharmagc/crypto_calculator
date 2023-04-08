@@ -1,12 +1,13 @@
-import requests
 import pandas as pd
 import numpy as np
 from datetime import date
 from datetime import timedelta
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as md
+
 from mpl_finance import candlestick_ohlc
-import yfinance as yf
 from cryptocmd import CmcScraper
 import statsmodels.api as sm
 from itertools import product
@@ -15,18 +16,18 @@ from datetime import datetime
 import io 
 import base64
 import urllib
+from scipy import stats
+
 
 
 
 today = date.today()
-date_x = today - timedelta(days=3650)
-dates = pd.date_range(start= date_x, end = today ).strftime("%Y-%m-%d")
-dates_list = dates.to_list()
+
 
 plt.rcParams.update({
     "lines.color": "black",
     "patch.edgecolor": "black",
-    "text.color": "black",
+    "text.color": "lightgray",
     "axes.facecolor": "black",
     "axes.edgecolor": "lightgray",
     "axes.labelcolor": "white",
@@ -39,7 +40,7 @@ plt.rcParams.update({
     "savefig.edgecolor": "black"})
 
 
-def getdata(sybmbol):
+def getdata(sybmbol,date_x):
     scraper = CmcScraper(sybmbol, str(date_x.strftime('%d-%m-%Y')), str(today.strftime('%d-%m-%Y')))
     df = scraper.get_dataframe()
     df.reset_index(inplace=True)
@@ -48,8 +49,17 @@ def getdata(sybmbol):
 
     return df
 
+def forecast_accuracy(forecast, actual):
+
+    
+    corr = np.corrcoef(forecast, actual)[0,1]   # corr
+    str= "The accuracy of the model is {0}%".format( round(float(corr), 2)*100 )
+    return str
+
+
 def getcandleChart(sybmbol):
-    df = getdata(sybmbol)
+    date_x = today - timedelta(days=45)
+    df = getdata(sybmbol,date_x)
     filtered_df = df[['Date','Open','High','Low','Close']]
 
     f,ax=plt.subplots(figsize=(10,5))
@@ -66,10 +76,13 @@ def getcandleChart(sybmbol):
     plt.savefig( img, format='png')
     img.seek(0)
     plot_data = urllib.parse.quote(base64.b64encode(img.getvalue()).decode('utf-8'))
+    plt.close()
     return plot_data
 
 def prediction(sybmbol):
-    raw_df = getdata(sybmbol)
+    data ={}
+    date_x = today - timedelta(days=3650)
+    raw_df = getdata(sybmbol,date_x)
     raw_df.index = raw_df.date
     raw_df.head()
 
@@ -80,18 +93,17 @@ def prediction(sybmbol):
     Ps = range(0, 3)
     ps = range(0, 3)
     D=1
-    d=1
+    d=1 # after checking transformations
     parameters = product(ps, qs, Ps, Qs)
     parameters_list = list(parameters)
     len(parameters_list)
 
-# Model Selection
     results = []
     best_aic = float("inf")
     warnings.filterwarnings('ignore')
     for param in parameters_list:
         try:
-            model=sm.tsa.statespace.SARIMAX(df_month.Close, order=(param[0], d, param[1]), seasonal_order=(param[2], D, param[3], 12)).fit(disp=-1)
+            model=sm.tsa.statespace.SARIMAX(df_month.Close, order=(param[0], d, param[1]),seasonal_order=(param[2], D, param[3], 12)).fit(disp=-1)
         except ValueError:
             print('wrong parameters:', param)
             continue
@@ -99,22 +111,34 @@ def prediction(sybmbol):
     if aic < best_aic:
         best_model = model
         best_aic = aic
-        best_param = param
     results.append([param, model.aic])
     df_month2 = df_month[['Close']]
-    date_list = [datetime(2023, 4, 30), datetime(2023, 5, 31), datetime(2023, 6, 30), datetime(2023, 7, 31), 
-                datetime(2023, 8, 31), datetime(2023, 9, 30),datetime(2023, 10, 31),datetime(2023, 11, 30),datetime(2023, 12, 31)]
+    date_list = [ datetime(2023, 5, 31), datetime(2023, 6, 30), datetime(2023, 7, 31), 
+             datetime(2023, 8, 31), datetime(2023, 9, 30),datetime(2023, 10, 31),datetime(2023, 11, 30),datetime(2023, 12, 31),datetime(2024, 1, 31)]
     future = pd.DataFrame(index=date_list, columns= df_month.columns)
     df_month2 = pd.concat([df_month2, future])
-    from scipy import stats
-    df_month2['forecast'] = best_model.predict(start=100, end=130)
+    df_month2['forecast'] = best_model.predict(start=0, end=150)
+    df_month2['forecast'] = df_month2['forecast'].shift(-1) 
     df_month2.Close.plot()
-
     df_month2.forecast.plot(color='r', ls='--', label='Predicted Closed Price')
     plt.legend()
-    plt.title('Crypto exchanges, by months')
+    plt.title('Crypto exchanges Prediction')
     plt.ylabel('mean USD')
-    plt.show()
-    print(df_month2['forecast'][-10:])
+    img=io.BytesIO()
+    plt.savefig( img, format='png',dpi=125)
+    img.seek(0)
+    plt.close()
+    data['plot_data'] = urllib.parse.quote(base64.b64encode(img.getvalue()).decode('utf-8'))
+    data['result'] =forecast_accuracy(df_month2.forecast[90:110],df_month2.Close[90:110])
 
-prediction('BTC') 
+    months_3 = today + timedelta(90)
+    months_6 = today + timedelta(180)
+    ind = df_month2.index.get_loc(str(months_3),method ='nearest')
+    data['3mon'] = df_month2.forecast[ind]
+    data['6mon'] = df_month2.forecast[df_month2.index.get_loc(str(months_6),method ='nearest')]
+    return data
+
+
+
+
+
