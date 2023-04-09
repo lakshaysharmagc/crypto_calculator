@@ -5,7 +5,6 @@ import getdata as gs
 import recommend as rcd
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///crypto.db'
-server = app.server
 db = SQLAlchemy(app)
 
 def calculate(predicted_value,current,vol):
