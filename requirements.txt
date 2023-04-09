@@ -1,5 +1,5 @@
 Flask
-SQLAlchemy-1.4.0
+SQLAlchemy
 flask-sqlalchemy==2.5.1
 pandas
 gunicorn==20.0.4
