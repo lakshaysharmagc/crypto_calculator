@@ -11,10 +11,6 @@ matplotlib
 mpl_finance
 cryptocmd
 statsmodels
-itertools
-urllib
 scipy
 numpy
 requests
-warnings
-base64
