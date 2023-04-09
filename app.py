@@ -48,8 +48,9 @@ def index():
 def recommend(coin):
     values = gs.getchart(coin)
     plot_data=rcd.getcandleChart(coin)
+    Title = db.session.execute(db.select(Crypto.title).filter_by(symbol=coin)).scalar()
     months = ["Jan'22","Feb'22","Mar'22","Apr'22","May'22","Jun'22","Jul'22","Aug'22","Sep'22","Oct'22","Nov'22","Dec'22","Jan'23","Feb'23"]
-    return render_template('recommend.html',labels = months, values = values,coin =coin, plot_url=plot_data )
+    return render_template('recommend.html',labels = months, values = values,coin =coin, plot_url=plot_data ,title = Title)
 
 
 

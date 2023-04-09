@@ -121,15 +121,20 @@ def prediction(sybmbol):
     df_month2['forecast'] = df_month2['forecast'].shift(-1) 
     df_month2.Close.plot()
     df_month2.forecast.plot(color='r', ls='--', label='Predicted Closed Price')
+    now = df_month2.index.get_loc(str(today),method ='ffill')
+    plt.scatter(today,df_month2.Close[now], marker='o', color='w', label='Current Price')
     plt.legend()
     plt.title('Crypto exchanges Prediction')
-    plt.ylabel('mean USD')
+    plt.ylabel('USD')
     img=io.BytesIO()
-    plt.savefig( img, format='png',dpi=125)
+    plt.savefig( img, format='png',dpi=100)
     img.seek(0)
     plt.close()
     data['plot_data'] = urllib.parse.quote(base64.b64encode(img.getvalue()).decode('utf-8'))
-    data['result'] =forecast_accuracy(df_month2.forecast[90:110],df_month2.Close[90:110])
+    acc_data = df_month2[df_month2['Close'].notnull()]
+    acc_data = acc_data[acc_data['forecast'].notnull()]
+    print(acc_data)
+    data['result'] =forecast_accuracy(acc_data.forecast.tail(15),acc_data.Close.tail(15))
 
     months_3 = today + timedelta(90)
     months_6 = today + timedelta(180)
