@@ -2,9 +2,9 @@ Flask
 SQLAlchemy
 flask-sqlalchemy==2.5.1
 pandas
-gunicorn==20.0.4
-itsdangerous==1.1.0
-Jinja2==2.11.3
+gunicorn
+itsdangerous
+Jinja2
 datetime
 matplotlib
 mpl_finance
