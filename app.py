@@ -39,10 +39,15 @@ class Crypto (db.Model):
         def __repr__(self) -> str:
              return f"{self.symbol} -{self.title}"
 
+@app.route('/')
+def home():
+    return redirect("/home")
+
 @app.route('/home' ,methods =['GET','POST'])
 def index():
     coins = Crypto.query.all()
     return render_template('index.html',coins = coins)
+
     
 @app.route('/recommend/<coin>')
 def recommend(coin):
