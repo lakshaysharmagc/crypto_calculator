@@ -13,7 +13,7 @@
 </head>
 <body style="font-family: 'Roboto', sans-serif;">
     <div id="navbar">
-        <a href="./" id="logo"><img src="/static/Logo.png" alt="The Big Leaf" style="height: 3.5vw; width: 13vw;"></a>
+        <a href="/home" id="logo"><img src="/static/Logo.png" alt="The Big Leaf" style="height: 3.5vw; width: 13vw;"></a>
         <div id="navbar-right">
           <a href="/home">Home</a>
           <a href="/Calculator">Calculator</a>
@@ -26,24 +26,22 @@
             Get Recommendations for your crypto
         </h1>
 
-        <div style="padding: 0.5vw; height: 23vw; width: 45vw;">  
-            <canvas id="myChart"></canvas>
+        <div>  
+            <canvas style="padding: 0.5vw; height: 23vw; width: 45vw;" id="myChart"></canvas>
         </div>
-        <div style="position: absolute; top: 10vw; right: 15vw;"> 
+        <div style="position: absolute; top: 10vw; right: 15vw; left: 53vw;"> 
             <h1 style="font-size: 2.5vw;">You selected : {{title}}</h1>
             <h3> Candle Chart for Last 45 Days for This Cryptocurrency </h3> </div>
-        <div style="position: absolute; top: 16vw; right: 53vw;">
+        <div style="position: absolute; top: 20vw; right: 5vw; left: 53vw;">
             
             <p style = "color: #7ed957; font-size: 1.2vw;">
                 
-            <img class="plot"  style=" position:absolute;" src="data:image/png;base64, {{ plot_url }}" >
+            <img class="plot"  style=" position:absolute; height: 20vw; width: 40vw;" src="data:image/png;base64, {{ plot_url }}" >
 
             </p>
-            <div style="padding-top: 1vw; padding-left: 12vw;visibility:{{ visibility2 }}">
-            <button type="submit" class= "recommend" >Predict</button>
         </div>
         </div>
-        <div style="padding-top: 1vw; padding-left: 12vw;visibility:{{ visibility2 }}">
+        <div style="padding-top: 1vw; padding-left: 12vw;  position: absolute; top: 45vw; visibility:{{ visibility2 }}">
             <button type="submit" class= "recommend" >Predict</button>
         </div>
     </div>
