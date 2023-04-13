@@ -26,8 +26,8 @@
             Get Recommendations for your crypto
         </h1>
 
-        <div>  
-            <canvas style="padding: 0.5vw; height: 23vw; width: 45vw;" id="myChart"></canvas>
+        <div style="padding: 0.5vw; height: 23vw; width: 45vw;">  
+            <canvas id="myChart"></canvas>
         </div>
         <div style="position: absolute; top: 10vw; right: 15vw; left: 53vw;"> 
             <h1 style="font-size: 2.5vw;">You selected : {{title}}</h1>
@@ -42,7 +42,7 @@
         </div>
         </div>
         <div style="padding-top: 1vw; padding-left: 12vw;  position: absolute; top: 45vw; visibility:{{ visibility2 }}">
-            <button type="submit" class= "recommend" >Predict</button>
+            <a href="/Calculator"><button type="submit" class= "recommend" >Predict</button></a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
